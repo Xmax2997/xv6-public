@@ -1,16 +1,9 @@
-#include "types.h"
-#include "param.h"
-#include "memlayout.h"
-#include "mmu.h"
-#include "proc.h"
-#include "defs.h"
-#include "x86.h"
-#include "elf.h"
+#include <defs.h>
 
 int
 main(void)
 {
-	getprocs();
-	return 0; 
+	cprintf("Hay %d procesos en ejecución en la CPU", getprocs());
+	exit();
 
 }

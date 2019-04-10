@@ -548,6 +548,5 @@ getprocs(void)
   }
 
   release(&ptable.lock);  
-  cprintf("Hay %d procesos en ejecución en la CPU", counter);
   return counter;  
 }
