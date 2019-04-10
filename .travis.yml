@@ -11,5 +11,6 @@ skip_cleanup: true
   on:
     repo: Xmax2997/xv6-public
     branch: project_1
+    tag: true
 
 
