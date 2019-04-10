@@ -7,10 +7,12 @@ deploy:
   file:
     - fs.img
     - xv6.img
-skip_cleanup: true
+  skip_cleanup: true
   on:
     repo: Xmax2997/xv6-public
     branch: project_1
     tags: true
+
+
 
 
