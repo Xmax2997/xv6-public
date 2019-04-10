@@ -11,4 +11,6 @@ int
 main(void)
 {
 	getprocs();
+	return 0; 
+
 }
