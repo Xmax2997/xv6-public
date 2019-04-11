@@ -1,7 +1,11 @@
-#include <stdio.h>
+
+#include "types.h"
+#include "stat.h"
+#include "user.h"
 
 int
 main(void)
 {
-	printf("Hay %d procesos en ejecución en la CPU", getprocs());
+	getprocs();
+	return 0; 
 }
