@@ -546,6 +546,7 @@ getprocs(void)
     if(p->state != UNUSED && p->state != ZOMBIE)
       counter++;
   }
-  release(&ptable.lock);  
+  release(&ptable.lock);
+  printf("Funcina")  
   return counter;   
 }
