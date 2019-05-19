@@ -547,6 +547,6 @@ getprocs(void)
       counter++;
   }
   release(&ptable.lock);
-  printf("Funcina")  
+  printf("Funciona"); 
   return counter;   
 }
