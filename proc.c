@@ -547,6 +547,6 @@ getprocs(void)
       counter++;
   }
   release(&ptable.lock);
-  cprintf("Hay %i procesos en ejecución", counter);
-  return counter;   
+  cprintf("Hay %d procesos en ejecución", counter);
+    
 }
