@@ -546,7 +546,8 @@ getprocs(void)
     if(p->state != UNUSED && p->state != ZOMBIE)
       counter++;
   }
-  release(&ptable.lock);
+
+  release(&ptable.lock);  
   cprintf("Hay %d procesos en ejecución", counter);
-    
+  return 0
 }
