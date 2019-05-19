@@ -6,6 +6,5 @@
 int
 main(void)
 {
-	return getprocs();
-		
+	return getprocs();	
 }
