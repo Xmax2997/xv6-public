@@ -4,5 +4,5 @@
 
  int tickets(void)  
  {  
-  printf("hello world")
+  return tickets();
  }  
