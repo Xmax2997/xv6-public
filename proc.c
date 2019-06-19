@@ -343,7 +343,7 @@ scheduler(void)
   int foundproc = 1;
   int count = 0;
   long golden_ticket = 0;
-  int total_no_tickets = 0;
+  int total_tickets = 0;
   
   for(;;){
     // Enable interrupts on this processor.
