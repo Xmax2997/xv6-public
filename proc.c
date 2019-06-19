@@ -360,7 +360,7 @@ scheduler(void)
     total_tickets = 0;
     total_tickets = lottery_Total();
 
-    golden_ticket = random_at_most(total_no_tickets);
+    golden_ticket = random_at_most(total_tickets);
 
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
