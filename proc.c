@@ -563,3 +563,21 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int 
+getprocs(void)
+{ 
+  struct proc *p;
+  int counter = 0;
+  acquire(&ptable.lock);
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if(p->state != UNUSED && p->state != ZOMBIE)
+      counter++;
+  }
+
+  release(&ptable.lock);  
+  cprintf("La cantidad de procesos en ejecucion en la CPU es %d\n", counter);
+  return 0;
+}
