@@ -326,7 +326,7 @@ int lotteryTotal(void)
       total_tickets = total_tickets + p->tickets;
     } 
    }
-   return total_tickets
+   return total_tickets;
 
  }
 
