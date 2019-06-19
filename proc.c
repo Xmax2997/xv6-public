@@ -578,6 +578,6 @@ getprocs(void)
   }
 
   release(&ptable.lock);  
-  cprintf("La cantidad de procesos en ejecucion en la CPU es %d\n", counter);
+  cprintf("La cantidad de procesos en ejecucion en la CPU es: %d\n", counter);
   return 0;
 }
