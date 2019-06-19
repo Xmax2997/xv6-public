@@ -313,22 +313,19 @@ wait(void)
   }
 }
 
-// Couunt the total number of tickets distributed
-int lotteryTotal(void)
-{
+int lottery_Total(void){
   struct proc *p;
-  int total_tickets = 0;
+  int ticket_aggregate=0;
 
+//loop over process table and increment total tickets if a runnable process is found 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
-    if(p->state==RUNNABLE)
-    {
-      total_tickets = total_tickets + p->tickets;
-    } 
-   }
-   return total_tickets;
-
- }
+    if(p->state==RUNNABLE){
+      ticket_aggregate+=p->tickets;
+    }
+  }
+  return ticket_aggregate;          // returning total number of tickets for runnable processes
+}
 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
@@ -342,56 +339,62 @@ void
 scheduler(void)
 {
   struct proc *p;
-  int total_tickets, count = 0;
-  int ticket_winner;
-  
-  for(;;){
+  int foundproc = 1;
+  int count = 0;
+  long golden_ticket = 0;
+  int total_no_tickets = 0;
 
-    count ++;
+  for(;;){
     // Enable interrupts on this processor.
     sti();
+
+    if (!foundproc) hlt();
+    foundproc = 0;
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
 
-    total_tickets = lotteryTotal();
+    //resetting the variables to make scheduler start from the beginning of the process queue
+    golden_ticket = 0;
+    count = 0;
+    total_no_tickets = 0;
+    
+    //calculate Total number of tickets for runnable processes  
+    
+    total_no_tickets = lottery_Total();
 
-    if(total_tickets > 0)
-    {
-      ticket_winner = random_at_most(total_tickets);  
+    //pick a random ticket from total available tickets
+    golden_ticket = random_at_most(total_no_tickets);
+ 
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE)
+        continue;
 
-      for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-      {
-        if(p->state != RUNNABLE)
-        {
-          ticket_winner = ticket_winner - p->tickets;
-        }
-        if(p->state != RUNNABLE || ticket_winner >= 0)
-        {
-          continue;
-        }
-
-        cprintf("Process Winner: #%s \n", p->name);
-
-        // Switch to chosen process.  It is the process's job
-        // to release ptable.lock and then reacquire it
-        // before jumping back to us.
-        proc = p;
-        switchuvm(p);
-        p->state = RUNNING;
-
-        swtch(&cpu->scheduler, p->context);
-        switchkvm();
-
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        proc = 0;
+      //find the process which holds the lottery winning ticket 
+      if ((count + p->tickets) < golden_ticket){
+        count += p->tickets;
+        continue;
       }
-    }
 
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      foundproc = 1;
+      proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+      swtch(&cpu->scheduler, proc->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      proc = 0;
+      break;
+    }
     release(&ptable.lock);
-  } 
-}  
+
+  }
+} 
 
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
