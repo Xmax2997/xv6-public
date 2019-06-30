@@ -90,8 +90,3 @@ sys_uptime(void)
   return xticks;
 }
 
-int
-sys_getprocs(void)
-{
-  return getprocs();
-}

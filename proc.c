@@ -535,7 +535,7 @@ procdump(void)
 
 
 int 
-getprocs(void)
+sys_getprocs(void)
 { 
   struct proc *p;
   int counter = 0;
@@ -548,6 +548,43 @@ getprocs(void)
   }
 
   release(&ptable.lock);  
-  cprintf("La cantidad de procesos en ejecucion en la CPU es %d\n", counter);
-  return 0;
+  
+  return counter;
+}
+
+
+int 
+translate(char* virtual_address)
+{
+    int* physical_address;
+    pde_t *pgtab,*pde;
+
+    
+    struct proc *curproc = myproc();
+    pde = curproc->pgdir;
+
+    if(*pde & PTE_P){
+      pgtab = (pte_t*)V2P(PTE_ADDR(*pde));
+    }
+    else
+    {
+      cprintf("\n PTE Not Present! - Invalid Virtual address\n");
+      return -1;
+    }
+
+    pte_t *pte;
+    pte = &pgtab[PTX(virtual_address)];
+    physical_address = (int*)V2P(PTE_ADDR(*pte));
+
+    cprintf(" Physical Address: %d\n",physical_address);
+
+    return 0;
+}
+
+char*
+sys_gap(char *s)
+{
+  argstr(0, &s);
+  translate(s);
+  return s;
 }

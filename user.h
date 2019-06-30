@@ -24,6 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getprocs(void);
+int gpa(char* s);
 
 // ulib.c
 int stat(const char*, struct stat*);
